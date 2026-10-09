@@ -251,6 +251,15 @@ class APITestCase(unittest.TestCase):
         self.assertFalse(pep8style.excluded('./CVSoup'))
         self.assertFalse(pep8style.excluded('./CVS/subdir'))
 
+    def test_styleguide_excluded_current_dir(self):
+        # issue #1217: a pattern like '.*' must match hidden entries such
+        # as '.tox' but must not exclude the current directory itself.
+        pep8style = pycodestyle.StyleGuide(exclude=['.*'])
+        self.assertFalse(pep8style.excluded('.'))
+        self.assertFalse(pep8style.excluded('..'))
+        self.assertTrue(pep8style.excluded('.tox'))
+        self.assertTrue(pep8style.excluded('.git'))
+
     def test_styleguide_checks(self):
         pep8style = pycodestyle.StyleGuide(paths=[E11])
 

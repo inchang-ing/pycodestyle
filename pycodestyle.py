@@ -2444,6 +2444,11 @@ class StyleGuide:
         """
         if not self.options.exclude:
             return False
+        if filename in ('.', '..'):
+            # The current/parent directory must never be excluded by a
+            # pattern such as '.*', otherwise the whole tree is skipped
+            # (see issue #1217).
+            return False
         basename = os.path.basename(filename)
         if filename_match(basename, self.options.exclude):
             return True
