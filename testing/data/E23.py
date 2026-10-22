@@ -13,3 +13,9 @@ result = {
     'key1': 'value',
     'key2': 'value',
 }
+#: Okay
+print(f"{x:0.{digits:d}f}")
+#: Okay
+print(f'{x:{y:{z:02}}}')
+#: Okay
+print(f"{a[lower:upper]}")

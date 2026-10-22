@@ -906,11 +906,11 @@ def missing_whitespace(logical_line, tokens):
                 # slice
                 if text == ':' and brace_stack[-1:] == ['[']:
                     pass
-                # 3.12+ fstring format specifier
-                elif text == ':' and brace_stack[-2:] == ['f', '{']:  # pragma: >=3.12 cover  # noqa: E501
-                    pass
-                # 3.14+ tstring format specifier
-                elif text == ':' and brace_stack[-2:] == ['t', '{']:  # pragma: >=3.14 cover  # noqa: E501
+                # 3.12+ fstring / 3.14+ tstring format specifier, including
+                # replacement fields nested inside the spec
+                # (e.g. f"{x:0.{digits:d}f}" or f"{x:{y:{z:02}}}")
+                elif text == ':' and brace_stack[-1:] == ['{'] and (  # pragma: >=3.12 cover  # noqa: E501
+                        'f' in brace_stack or 't' in brace_stack):
                     pass
                 # tuple (and list for some reason?)
                 elif text == ',' and next_char in ')]':
